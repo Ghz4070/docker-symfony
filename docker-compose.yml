@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile
     networks:
       - network_nginx
-    ports:
-      - "9000:9000"
+    # ports:
+    #   - "9000:9000"
     depends_on:
       - database
     volumes:
@@ -49,19 +49,18 @@ services:
       - ./docker/sql/data:/var/lib/mysql
 
   pma:
-    image: phpmyadmin:5.0.4-fpm-alpine
+    image: phpmyadmin:latest
     restart: on-failure
     environment:
       - PMA_HOST=database
-      - PMA_PORT=3306
+      - PMA_USER=user
+      - PMA_PASSWORD=userSecret
       - MYSQL_ROOT_PASSWORD=root
       - PMA_ARBITRARY=1
-    links:
-      - database:db
     networks:
       - network_nginx
     ports:
-      - "8080:8080"
+      - "8080:80"
 
   composer:
     image: composer:2
